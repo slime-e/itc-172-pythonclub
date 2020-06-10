@@ -1,6 +1,7 @@
 from .models import ProductType, Product, Review
 from django.shortcuts import render, get_object_or_404
 from .forms import ProductForm
+from django.contrib.auth.decorators import login_required
 
 # Create your views here.
 def index (request):
@@ -28,7 +29,7 @@ def productdetails(request, id):
     }
     return render(request, 'club/proddetails.html', context=context)
 
-
+@login_required
 def newProduct(request):
      form=ProductForm
      if request.method=='POST':
@@ -40,3 +41,10 @@ def newProduct(request):
      else:
           form=ProductForm()
      return render(request, 'club/newproduct.html', {'form': form})
+
+
+def loginmessage(request):
+    return render(request, 'club/loginmessage.html')
+
+def logoutmessage(request):
+    return render(request, 'club/logoutmessage.html')

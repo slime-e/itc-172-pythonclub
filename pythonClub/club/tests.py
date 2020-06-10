@@ -3,6 +3,7 @@ from .models import Product, ProductType, Review
 from .views import index, gettypes, getproducts
 from django.urls import reverse
 from django.contrib.auth.models import User
+from .forms import ProductForm, ProductTypeForm
 
 
 class ProductTypeTest(TestCase):
@@ -76,6 +77,23 @@ def test_discount(self):
         discount=self.prod.memberdiscount()
         self.assertEqual(discount, 10.00)
 
-    def test_number_of_reviews(self):
-        reviews=Review.objects.filter(product=self.prod).count()
-        self.assertEqual(reviews, 2)
+
+def test_number_of_reviews(self):
+    reviews=Review.objects.filter(product=self.prod).count()
+    self.assertEqual(reviews, 2)
+
+
+class ProductType_Form_Test(TestCase):
+    def test_typeform_is_valid(self):
+        form=ProductTypeForm(data={'typename': "type1", 'typedescription' : "some type"})
+        self.assertTrue(form.is_valid())
+
+
+def test_typeform_minus_descript(self):
+        form=ProductTypeForm(data={'typename': "type1"})
+        self.assertTrue(form.is_valid())
+
+
+def test_typeform_empty(self):
+        form=ProductTypeForm(data={'typename': ""})
+        self.assertFalse(form.is_valid())
